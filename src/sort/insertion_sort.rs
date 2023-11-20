@@ -25,31 +25,10 @@ where
     }
 }
 
-use rand::thread_rng;
-use rand::Rng;
-
-pub fn generate_rand_vec_i32(length: u32) -> Vec<i32> {
-    let mut rng = thread_rng();
-    (0..length).map(|_| rng.gen()).collect()
-}
-
-pub fn check_if_sorted_increasing(v: &Vec<i32>) -> Result<&'static str, &'static str> {
-    if v.is_empty() {
-        return Ok("Vector is empty.");
-    }
-
-    for (i, &num) in v.iter().enumerate() {
-        if i > 0 && v[i - 1] > num {
-            return Err("Error: Vector is not sorted.");
-        }
-    }
-
-    Ok("Vector is sorted.")
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::utils::{random, validate};
 
     #[test]
     fn test_insertion_sort_increasing_fixed() {
@@ -78,13 +57,10 @@ mod tests {
     #[test]
     fn test_insert_sort_random_increasing() {
         println!("Generating random Vec<i32>...");
-        let mut rand_vec: Vec<i32> = generate_rand_vec_i32(10_000);
+        let mut rand_vec: Vec<i32> = random::generate_rand_vec_i32(10_000);
         println!("Sorting...");
         insertion_sort(&mut rand_vec, |a: &i32, b: &i32| a > b);
         println!("Verifying results...");
-        match check_if_sorted_increasing(&rand_vec) {
-            Ok(message) => println!("{}", message),
-            Err(error) => println!("{}", error),
-        };
+        assert!(validate::vec_is_sorted(&rand_vec, |a, b| a > b))
     }
 }
