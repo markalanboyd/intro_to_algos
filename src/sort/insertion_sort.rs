@@ -13,8 +13,7 @@ where
     T: Copy + Ord,
     F: FnMut(&T, &T) -> bool,
 {
-    let n = v.len();
-    for i in 1..n {
+    for i in 1..v.len() {
         let key = v[i];
         let mut j = i;
         while j > 0 && compare(&v[j - 1], &key) {
