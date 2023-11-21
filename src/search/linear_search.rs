@@ -1,11 +1,11 @@
 // Input: A sequence of n numbers store in an array A[1:n] and a value x
 // Output: An index i such that x equals A[i] or NIL if x does not appear
 
-pub fn linear_search<T: Ord>(v: &Vec<T>, sequence: &[T]) -> Option<usize> {
-    if sequence.len() > v.len() {
+pub fn linear_search<T: PartialEq>(slice: &[T], sequence: &[T]) -> Option<usize> {
+    if sequence.len() > slice.len() {
         return None;
     }
-    for (i, window) in v.windows(sequence.len()).enumerate() {
+    for (i, window) in slice.windows(sequence.len()).enumerate() {
         if window == sequence {
             return Some(i);
         }
